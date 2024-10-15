@@ -1,0 +1,32 @@
+import smtplib
+from email.mime.text import MIMEText
+
+# Define thresholds
+sales_threshold = 10000  # Minimum sales amount
+traffic_threshold = 5000  # Traffic threshold
+
+def send_notification(subject, body, recipient_email):
+    sender_email = "pieterlate@icloud.com"
+    password = "Willie083Willie"
+    
+    msg = MIMEText(body)
+    msg['Subject'] = subject
+    msg['From'] = sender_email
+    msg['To'] = recipient_email
+    
+    with smtplib.SMTP('smtp.gmail.com', 587) as server:
+        server.starttls()
+        server.login(sender_email, password)
+        server.sendmail(sender_email, recipient_email, msg.as_string())
+
+def check_performance(current_sales, current_traffic):
+    if current_sales < sales_threshold:
+        send_notification("Sales Alert", "Sales have dropped below the threshold!", "pieterlate@icloud.com")
+    if current_traffic < traffic_threshold:
+        send_notification("Traffic Alert", "Website traffic has dropped below the threshold!", "pieterlate@icloud.com")
+
+# Simulate current sales and traffic
+current_sales = 8000  # Example current sales
+current_traffic = 3000  # Example current traffic
+
+check_performance(current_sales, current_traffic)
